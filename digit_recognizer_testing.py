@@ -36,7 +36,7 @@ class DigitRecognizerTesting:
         thresh = cv2.adaptiveThreshold(gray, 255, 1, 1, 11, 2)
         insurance_card_number_output = "";
         _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        #contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
         for cnt in contours:
             if cv2.contourArea(cnt) > self.image_to_test.contour_dimension_to_h:
