@@ -9,7 +9,7 @@
 # E-mail: g-sari@g-sari.com                                     #
 #################################################################
 
-import cv2
+import cv2, sys
 import numpy as np
 from picture import Pic
 
@@ -19,7 +19,7 @@ class DigitRecognizerTesting:
 
     def __init__(self):
         #self.image_to_test = Pic(pic_name="ocr_insurance_card_test_2.jpg", contour_dimension_from_h=21, contour_dimension_to_h=28)
-        self.image_to_test = Pic(pic_name="cmaster.png", contour_dimension_from_h=21, contour_dimension_to_h=28)
+        self.image_to_test = Pic(pic_name=sys.argv[1], contour_dimension_from_h=21, contour_dimension_to_h=28)
         self.load_training_data()
         self.model = cv2.ml.KNearest_create()
         self.model.train(self.samples, cv2.ml.ROW_SAMPLE, self.responses)
@@ -36,6 +36,7 @@ class DigitRecognizerTesting:
         thresh = cv2.adaptiveThreshold(gray, 255, 1, 1, 11, 2)
         insurance_card_number_output = "";
         _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
         for cnt in contours:
             if cv2.contourArea(cnt) > self.image_to_test.contour_dimension_to_h:
@@ -52,10 +53,11 @@ class DigitRecognizerTesting:
                     cv2.putText(out, string, (x, y + h), 0, 1, (0, 255, 0))
 
         reversed_insurance_card_number_output = insurance_card_number_output[::-1]
-        print("Detected insurance card number: " + reversed_insurance_card_number_output)
-        cv2.imshow('input', im)
-        cv2.imshow('output', out)
-        cv2.waitKey(0)
+        print("Detected insurance card number: ")
+        print "{:,}".format(long(reversed_insurance_card_number_output))
+        #cv2.imshow('input', im)
+        #cv2.imshow('output', out)
+        #cv2.waitKey(0)
 
 # Start the testing process
 if __name__ == '__main__':
